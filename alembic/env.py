@@ -4,6 +4,7 @@ from sqlalchemy.ext.asyncio import create_async_engine
 from alembic import context
 import sys
 import os
+from app.models import user, project
 from app.models.user import User
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(__file__)))
