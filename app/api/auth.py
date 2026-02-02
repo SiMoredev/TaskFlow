@@ -5,6 +5,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from app.schemas.auth import RegisterRequest, LoginRequest, TokenResponse
 from app.crud.user import create_user, authenticate_user, get_user_by_email
 from app.core.security import create_access_token
+from app.core.security import verify_password
 from app.db.session import get_session
 from app.api.deps import get_current_user
 from app.models.user import User
@@ -24,9 +25,9 @@ async def register(request: RegisterRequest, session: AsyncSession = Depends(get
     return {"access_token": access_token, "token_type": "bearer"}
 
 @router.post("/login", response_model=TokenResponse)
-async def login(request: LoginRequest, session: AsyncSession = Depends(get_session)):
-    user = await authenticate_user(session, request.email, request.password)
-    if not user:
+async def login(form_data: OAuth2PasswordRequestForm = Depends(), session: AsyncSession = Depends(get_session)):
+    user = await get_user_by_email(session, form_data.username)
+    if not user or not verify_password(form_data.password, user.hashed_password):
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Invalid email or password",

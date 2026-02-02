@@ -9,7 +9,7 @@ async def get_user_by_email(session: AsyncSession, email: str) -> User | None:
     return result.scalars().first()
 
 async def create_user(session: AsyncSession, *, email: str, password: str) -> User:
-    user = User(email=email, hashed_password=hash_password(password), is_active=True)
+    user = User(username=email, email=email, hashed_password=hash_password(password), is_active=True)
     session.add(user)
     await session.commit()
     await session.refresh(user)
