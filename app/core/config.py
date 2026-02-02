@@ -1,5 +1,6 @@
 from pydantic_settings import BaseSettings
 from typing import Optional
+from app.db.session import DATABASE_URL
 
 class Settings(BaseSettings):
     # === JWT ===
@@ -8,7 +9,7 @@ class Settings(BaseSettings):
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 30
 
     # === Database ===
-    DATABASE_URL: str = "sqlite:///./sql_app.db"  # или postgresql://user:pass@localhost/dbname
+    DATABASE_URL: str = DATABASE_URL
 
     # === CORS ===
     BACKEND_CORS_ORIGINS: str = "http://localhost:3000,http://localhost:8000"

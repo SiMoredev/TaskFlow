@@ -5,6 +5,7 @@ from sqlalchemy.ext.asyncio import (
     create_async_engine,
 )
 
+#Заменить на адрес хоста
 DATABASE_URL = "postgresql+asyncpg://postgres:postgres@localhost:5432/taskflow"
 
 engine = create_async_engine(DATABASE_URL, echo=True)
